@@ -27,5 +27,5 @@ $ docker run -d --name app \
 ## nginx & uwsgi & Flaskで起動
 
 ```sh
-$ docker-compose up -d --build
+$ docker-compose -f docker-compose.local.yml up -d --build
 ```
