@@ -2,7 +2,7 @@ version: "3"
 services:
   nginx:
     container_name: nginx
-    build: ./nginx
+    image: juvshun/nginx
     ports:
       - 80:80
       - 1717:1717
@@ -10,22 +10,16 @@ services:
       - NGINX_MAIN_PORT=80
       - NGINX_STATS_PORT=1717
       - FORWARD_PROTOCOL=proxy_pass
-      - UWSGI_MAIN_PASS=http://app:3031
-      - UWSGI_STATS_PASS=http://app:3032
-    networks:
-      - webapp
+      - UWSGI_MAIN_PASS=http://localhost:3031
+      - UWSGI_STATS_PASS=http://localhost:3032
 
   app:
     container_name: app
-    build: ./app
+    image: juvshun/flask
     environment:
       - UWSGI_HTTP=:3031
       - UWSGI_STATS=:3032
       - UWSGI_STATS_HTTP=true
       # - UWSGI_PROCESSES=2
       # - UWSGI_THREADS=2
-    networks:
-      - webapp
-
-networks:
-  webapp:
+      
