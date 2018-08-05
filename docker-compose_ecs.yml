@@ -1,0 +1,31 @@
+version: "3"
+services:
+  nginx:
+    container_name: nginx
+    build: ./nginx
+    ports:
+      - 80:80
+      - 1717:1717
+    environment:
+      - NGINX_MAIN_PORT=80
+      - NGINX_STATS_PORT=1717
+      - FORWARD_PROTOCOL=proxy_pass
+      - UWSGI_MAIN_PASS=http://app:3031
+      - UWSGI_STATS_PASS=http://app:3032
+    networks:
+      - webapp
+
+  app:
+    container_name: app
+    build: ./app
+    environment:
+      - UWSGI_HTTP=:3031
+      - UWSGI_STATS=:3032
+      - UWSGI_STATS_HTTP=true
+      # - UWSGI_PROCESSES=2
+      # - UWSGI_THREADS=2
+    networks:
+      - webapp
+
+networks:
+  webapp:
