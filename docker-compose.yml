@@ -2,7 +2,7 @@ version: "3"
 services:
   nginx:
     container_name: nginx
-    image: juvshun/nginx
+    image: ${NGINX_IMAGE}
     ports:
       - 80:80
       - 1717:1717
@@ -15,11 +15,11 @@ services:
 
   app:
     container_name: app
-    image: juvshun/flask
+    image: ${FLASK_IMAGE}
     environment:
       - UWSGI_HTTP=:3031
       - UWSGI_STATS=:3032
       - UWSGI_STATS_HTTP=true
-      # - UWSGI_PROCESSES=2
-      # - UWSGI_THREADS=2
+      - UWSGI_PROCESSES=${PROCCESS_NUM}
+      - UWSGI_THREADS=${THREAD_NUM}
       
