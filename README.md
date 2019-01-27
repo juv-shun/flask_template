@@ -3,11 +3,9 @@
 ## Flaskアプリケーションのみ起動
 
 ```sh
-$ cd app/src
-$ python -m venv vendor
-$ source vendor/bin/activate
-$ pip install -r requirements.txt
-$ python src/main.py
+$ cd docker/app
+$ pipenv install
+$ pipenv run python src/main.py
 ```
 
 ## uwsgi & Flaskで起動
