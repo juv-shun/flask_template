@@ -3,7 +3,7 @@
 ## Flaskアプリケーションのみ起動
 
 ```sh
-$ cd docker/app
+$ cd app
 $ pipenv install
 $ pipenv run python src/main.py
 ```
