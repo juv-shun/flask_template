@@ -1,0 +1,2 @@
+nginx/* linguist-vendored
+app/Dockerfile linguist-vendored
