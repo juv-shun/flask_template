@@ -2,24 +2,27 @@ version: "3"
 services:
   nginx:
     container_name: nginx
-    image: ${NGINX_IMAGE}
+    build: ./nginx
+    volumes:
+      - uwsgi_socket:/tmp
     ports:
       - 80:80
       - 1717:1717
     environment:
       - NGINX_MAIN_PORT=80
       - NGINX_STATS_PORT=1717
-      - FORWARD_PROTOCOL=proxy_pass
-      - UWSGI_MAIN_PASS=http://localhost:3031
-      - UWSGI_STATS_PASS=http://localhost:3032
+      - UWSGI_SOCKET=/tmp/uwsgi_main.sock
+      - UWSGI_STATS=/tmp/uwsgi_stats.sock
 
   app:
     container_name: app
-    image: ${FLASK_IMAGE}
+    build: ./app
+    volumes:
+      - uwsgi_socket:/tmp
     environment:
-      - UWSGI_HTTP=:3031
-      - UWSGI_STATS=:3032
-      - UWSGI_STATS_HTTP=true
-      - UWSGI_PROCESSES=${PROCCESS_NUM}
-      - UWSGI_THREADS=${THREAD_NUM}
+      - UWSGI_SOCKET=/tmp/uwsgi_main.sock
+      - UWSGI_STATS=/tmp/uwsgi_stats.sock
+
+volumes:
+  uwsgi_socket:
       

@@ -4,23 +4,26 @@ services:
     container_name: nginx
     build: ./nginx
     volumes:
-      - /tmp/unix_socket:/tmp
+      - uwsgi_socket:/tmp
     ports:
       - 80:80
       - 1717:1717
     environment:
       - NGINX_MAIN_PORT=80
       - NGINX_STATS_PORT=1717
-      - FORWARD_PROTOCOL=uwsgi_pass
-      - UWSGI_MAIN_PASS=unix:///tmp/uwsgi_main.sock
-      - UWSGI_STATS_PASS=unix:///tmp/uwsgi_stats.sock
+      - UWSGI_SOCKET=/tmp/uwsgi_main.sock
+      - UWSGI_STATS=/tmp/uwsgi_stats.sock
 
   app:
     container_name: app
     build: ./app
     volumes:
-      - /tmp/unix_socket:/tmp
+      - uwsgi_socket:/tmp
+      - ./app:/var/www/
     environment:
       - UWSGI_SOCKET=/tmp/uwsgi_main.sock
       - UWSGI_STATS=/tmp/uwsgi_stats.sock
-    
+      - UWSGI_PY_AUTORELOAD=1
+
+volumes:
+  uwsgi_socket:

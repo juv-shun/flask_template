@@ -9,8 +9,7 @@ RUN apk --update add tzdata && \
     rm -rf /var/cache/apk/*
 RUN chmod a+x /start.sh
 
-ENV TZ=Asia/Tokyo \
-    DOLLAR='$' \
+ENV DOLLAR='$' \
     WORKER_CONNECTIONS=1024 \
     WORKER_RLIMIT_NOFILE=8196 \
     UWSGI_READ_TIMEOUT=60s \
